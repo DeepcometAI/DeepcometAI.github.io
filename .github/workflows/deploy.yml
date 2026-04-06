@@ -22,26 +22,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        with:
-          static_site_generator: nuxt
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --no-frozen-lockfile
 
       - name: Static HTML export with Nuxt
-        run: npm run generate
+        run: pnpm run generate
         env:
-          # If your repo is at https://USERNAME.github.io/REPO-NAME/ 
-          # set this to /REPO-NAME/
-          # If deploying to root (USERNAME.github.io), leave as /
           NUXT_APP_BASE_URL: /
 
       - name: Upload artifact
