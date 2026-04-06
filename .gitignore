@@ -5,6 +5,7 @@
 .nitro
 .cache
 dist
+*pnpm-workspace.yaml
 
 # Node dependencies
 node_modules
