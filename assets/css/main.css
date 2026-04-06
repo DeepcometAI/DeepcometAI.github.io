@@ -1,0 +1,61 @@
+/* assets/css/main.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 40vh;
+  max-height: 400px;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 300px;
+    max-height: 300px;
+  }
+}
+
+.stack-layer {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.stack-layer:hover,
+.stack-layer.active {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+  border-color: #3b82f6;
+  z-index: 10;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
