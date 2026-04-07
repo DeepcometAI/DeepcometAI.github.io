@@ -4,4 +4,5 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   integrations: [tailwind(), mdx()],
+  site: 'https://astronaut.github.io',
 });
