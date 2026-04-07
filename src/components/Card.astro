@@ -1,0 +1,17 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  tag?: string;
+}
+const { title, description, href, tag } = Astro.props;
+---
+<a href={href} class="block p-6 bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-deepcomet-accent dark:hover:border-deepcomet-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-deepcomet-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+  <div class="relative z-10">
+    {tag && <span class="text-xs font-bold uppercase tracking-wider text-deepcomet-accent mb-2 block">{tag}</span>}
+    <h3 class="text-xl font-bold mb-2 group-hover:text-deepcomet-accent transition-colors">{title}</h3>
+    <p class="text-gray-600 dark:text-gray-400">{description}</p>
+  </div>
+</a>

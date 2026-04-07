@@ -1,0 +1,120 @@
+---
+---
+<div class="relative w-full max-w-md hidden sm:block group" id="search-container">
+  <div class="relative">
+    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+      </svg>
+    </div>
+    <input type="search" id="search-input" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-deepcomet-accent focus:border-deepcomet-accent dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-deepcomet-accent dark:focus:border-deepcomet-accent transition-all duration-300 focus:shadow-[0_0_15px_rgba(59,130,246,0.3)]" placeholder="Search... (Cmd+K)" autocomplete="off">
+    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+      <kbd class="hidden md:inline-block px-2 py-0.5 text-xs font-semibold text-gray-500 bg-gray-100 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600">⌘K</kbd>
+    </div>
+  </div>
+  
+  <div id="search-results" class="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl hidden max-h-96 overflow-y-auto transform origin-top transition-all duration-200 scale-95 opacity-0">
+    <ul id="search-results-list" class="py-2 text-sm text-gray-700 dark:text-gray-200">
+      <!-- Results will be injected here -->
+    </ul>
+  </div>
+</div>
+
+<script>
+  interface SearchItem {
+    title: string;
+    description: string;
+    slug: string;
+    body: string;
+    type: string;
+  }
+
+  let searchData: SearchItem[] = [];
+  let isLoading = false;
+  
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const searchResults = document.getElementById('search-results');
+  const searchResultsList = document.getElementById('search-results-list');
+  const searchContainer = document.getElementById('search-container');
+
+  // Keyboard shortcut
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput?.focus();
+    }
+    if (e.key === 'Escape') {
+      hideResults();
+      searchInput?.blur();
+    }
+  });
+
+  function showResults() {
+    searchResults?.classList.remove('hidden');
+    // Small delay to allow display:block to apply before animating opacity/scale
+    requestAnimationFrame(() => {
+      searchResults?.classList.remove('scale-95', 'opacity-0');
+      searchResults?.classList.add('scale-100', 'opacity-100');
+    });
+  }
+
+  function hideResults() {
+    searchResults?.classList.remove('scale-100', 'opacity-100');
+    searchResults?.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+      searchResults?.classList.add('hidden');
+    }, 200); // match duration-200
+  }
+
+  async function fetchSearchData() {
+    if (searchData.length > 0 || isLoading) return;
+    isLoading = true;
+    try {
+      const res = await fetch('/search.json');
+      searchData = await res.json();
+    } catch (e) {
+      console.error("Failed to fetch search index", e);
+    }
+    isLoading = false;
+  }
+
+  searchInput?.addEventListener('focus', fetchSearchData);
+  
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.toLowerCase();
+    
+    if (query.length < 2) {
+      hideResults();
+      return;
+    }
+
+    const filtered = searchData.filter(item => 
+      item.title.toLowerCase().includes(query) || 
+      item.description.toLowerCase().includes(query) ||
+      item.body.toLowerCase().includes(query)
+    ).slice(0, 8);
+
+    if (searchResultsList) {
+      if (filtered.length > 0) {
+        searchResultsList.innerHTML = filtered.map(item => `
+          <li>
+            <a href="${item.slug}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <div class="font-semibold text-deepcomet-accent">${item.title} <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 ml-2 border border-gray-200 dark:border-gray-600 rounded px-1.5 py-0.5">${item.type}</span></div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">${item.description}</div>
+            </a>
+          </li>
+        `).join('');
+        showResults();
+      } else {
+        searchResultsList.innerHTML = `<li class="px-4 py-3 text-center text-gray-500 dark:text-gray-400">No results found for "${query}"</li>`;
+        showResults();
+      }
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!searchContainer?.contains(e.target as Node)) {
+      hideResults();
+    }
+  });
+</script>

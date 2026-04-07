@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+<Layout title={entry.data.title}>
+  <article class="prose dark:prose-invert prose-blue max-w-3xl mx-auto py-12">
+    <header class="mb-8">
+      <h1 class="mb-2">{entry.data.title}</h1>
+      <p class="text-sm text-gray-500">By {entry.data.author} on {entry.data.date.toDateString()}</p>
+    </header>
+    <Content />
+  </article>
+</Layout>

@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+
+const posts = await getCollection('blog');
+---
+<Layout title="Blog">
+  <div class="py-12">
+    <h1 class="text-4xl font-extrabold mb-8">Engineering Blog</h1>
+    <div class="grid grid-cols-1 gap-6 max-w-3xl">
+      {posts.map(post => (
+        <Card 
+          title={post.data.title}
+          description={`Published on ${post.data.date.toDateString()} by ${post.data.author}`}
+          href={`/blog/${post.slug}`}
+        />
+      ))}
+    </div>
+  </div>
+</Layout>

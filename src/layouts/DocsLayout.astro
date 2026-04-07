@@ -1,0 +1,29 @@
+---
+import Layout from './Layout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+
+interface Props {
+  title: string;
+  headings?: { depth: number; slug: string; text: string }[];
+}
+
+const { title, headings } = Astro.props;
+---
+<Layout title={title}>
+  <div class="flex flex-col md:flex-row gap-8 w-full">
+    <Sidebar />
+    <div class="flex-grow min-w-0">
+      <div class="flex flex-col lg:flex-row gap-12">
+        <div class="flex-grow max-w-3xl w-full">
+          <slot />
+        </div>
+        {headings && headings.length > 0 && (
+          <div class="hidden lg:block w-64 flex-shrink-0">
+            <TableOfContents headings={headings} />
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</Layout>

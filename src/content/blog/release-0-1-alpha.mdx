@@ -1,0 +1,18 @@
+---
+title: "Aurelia v0.1.0-alpha Release Notes"
+date: 2026-04-06
+author: "Nehal-aditya"
+tags: ["release", "compiler", "aurelia"]
+---
+
+# Aurelia v0.1.0-alpha: Specification-First
+
+We are thrilled to announce the first alpha release of the Aurelia compiler. This marks the beginning of Phase 1 in the DeepcometAI master roadmap.
+
+## Dual-Language Strategy
+Our architecture leverages a dual-language approach:
+- **C++23**: Powers the performance-critical compiler backend and MLIR/LLVM integration.
+- **Go 1.22+**: Drives the developer-facing tooling, including the CLI, package manager, and Language Server Protocol (LSP).
+
+## MLIR Lowering Process
+The source code is now successfully parsed into an AST and lowered into the Aurelia High-Level Dialect (AHL), enabling shape inference and symbolic verification.

@@ -1,0 +1,154 @@
+---
+interface Phase {
+  phase: string;
+  title: string;
+  timeline: string;
+  description: string;
+  details: string[];
+  status: 'completed' | 'in-progress' | 'planned';
+}
+
+const phases: Phase[] = [
+  { 
+    phase: 'Phase 1', 
+    title: 'Aurelia Foundation', 
+    timeline: 'Q4 2026', 
+    description: 'Alpha compiler, Lexer, Parser, and MLIR Integration.', 
+    status: 'in-progress',
+    details: [
+      'Implement core lexer and parser in Rust.',
+      'Define AST and intermediate representation.',
+      'Integrate with MLIR for initial code generation.',
+      'Release v0.1.0-alpha to early adopters.'
+    ]
+  },
+  { 
+    phase: 'Phase 2', 
+    title: 'Zenith Kernel', 
+    timeline: '2027', 
+    description: 'Probabilistic scheduling and AI-Watchdog immune system.', 
+    status: 'planned',
+    details: [
+      'Develop probabilistic task scheduler.',
+      'Implement AI-Watchdog for zero-day exploit detection.',
+      'Establish secure IPC mechanisms.',
+      'Initial boot on reference NPU hardware.'
+    ]
+  },
+  { 
+    phase: 'Phase 3', 
+    title: 'SkyOS & Generative UI', 
+    timeline: '2028+', 
+    description: 'Large Action Models (LAM) and Semantic File System.', 
+    status: 'planned',
+    details: [
+      'Integrate Large Action Models into the core OS.',
+      'Develop the Semantic File System for context-aware storage.',
+      'Create the Generative UI framework for dynamic interfaces.',
+      'Developer preview release of SkyOS.'
+    ]
+  },
+  { 
+    phase: 'Phase 4', 
+    title: 'DeepComet Model Family', 
+    timeline: 'Ongoing', 
+    description: 'Deployment of Prime, Zenith, Code, and Mobile tiers.', 
+    status: 'planned',
+    details: [
+      'Train and release DeepComet-Prime (Trillion-parameter).',
+      'Optimize DeepComet-Zenith for kernel-level operations.',
+      'Release DeepComet-Code for Aurelia synthesis.',
+      'Deploy DeepComet-Mobile for edge devices.'
+    ]
+  },
+  { 
+    phase: 'Phase 5', 
+    title: 'SkyCloud Infrastructure', 
+    timeline: 'Future', 
+    description: 'Decentralized cloud network sharing idle NPU power.', 
+    status: 'planned',
+    details: [
+      'Design peer-to-peer NPU sharing protocol.',
+      'Implement secure execution enclaves for shared workloads.',
+      'Launch SkyCloud tokenomics and incentive structure.',
+      'Global network beta testing.'
+    ]
+  }
+];
+---
+<div class="relative border-l border-gray-200 dark:border-gray-700 ml-3 md:ml-6 space-y-10">
+  {phases.map((item) => (
+    <div class="timeline-item mb-10 ml-6 opacity-0 translate-y-4 transition-all duration-700 ease-out cursor-pointer group" data-expanded="false">
+      <span class={`absolute flex items-center justify-center w-4 h-4 rounded-full -left-2 ring-4 ring-white dark:ring-deepcomet-900 transition-transform duration-500 group-hover:scale-150 ${item.status === 'in-progress' ? 'bg-deepcomet-accent shadow-[0_0_10px_rgba(59,130,246,0.8)]' : item.status === 'completed' ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}`}></span>
+      
+      <div class="bg-white dark:bg-gray-800/50 border border-transparent group-hover:border-gray-200 dark:group-hover:border-gray-700 rounded-xl p-4 -ml-4 transition-all duration-300">
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white group-hover:text-deepcomet-accent transition-colors">
+              {item.phase}: {item.title} 
+              {item.status === 'in-progress' && <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ml-3 animate-pulse">In Progress</span>}
+            </h3>
+            <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{item.timeline}</time>
+            <p class="text-base font-normal text-gray-500 dark:text-gray-400">{item.description}</p>
+          </div>
+          <div class="mt-1 ml-4 flex-shrink-0">
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-deepcomet-accent transition-transform duration-300 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+        </div>
+        
+        <div class="details-container grid grid-rows-[0fr] transition-all duration-300 ease-in-out opacity-0">
+          <div class="overflow-hidden">
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-gray-700">
+              <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-200 mb-2 uppercase tracking-wider">Key Milestones</h4>
+              <ul class="space-y-2">
+                {item.details.map(detail => (
+                  <li class="flex items-start text-sm text-gray-600 dark:text-gray-400">
+                    <svg class="w-4 h-4 text-deepcomet-accent mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  // Scroll animation observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.remove('opacity-0', 'translate-y-4');
+        entry.target.classList.add('opacity-100', 'translate-y-0');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  
+  // Setup timeline items
+  document.querySelectorAll('.timeline-item').forEach(item => {
+    observer.observe(item);
+    
+    // Click to expand functionality
+    item.addEventListener('click', () => {
+      const isExpanded = item.getAttribute('data-expanded') === 'true';
+      const details = item.querySelector('.details-container');
+      const chevron = item.querySelector('.chevron');
+      
+      if (isExpanded) {
+        item.setAttribute('data-expanded', 'false');
+        details?.classList.remove('grid-rows-[1fr]', 'opacity-100');
+        details?.classList.add('grid-rows-[0fr]', 'opacity-0');
+        chevron?.classList.remove('rotate-180');
+      } else {
+        item.setAttribute('data-expanded', 'true');
+        details?.classList.remove('grid-rows-[0fr]', 'opacity-0');
+        details?.classList.add('grid-rows-[1fr]', 'opacity-100');
+        chevron?.classList.add('rotate-180');
+      }
+    });
+  });
+</script>

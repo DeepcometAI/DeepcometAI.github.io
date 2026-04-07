@@ -1,4 +1,54 @@
-.idea/
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*pnpm-workspace.yaml
+
+# Astro build output
+dist/
+.astro/
+
+# Astro cache (used during dev/build)
+.cache/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Editor settings
 .vscode/
-.sixth/
-.obsidian/
+.idea/
+*.swp
+
+# Coverage and testing
+coverage/
+*.lcov
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# CI/CD artifacts
+*.tgz
+*.zip
+*.tar
+*.tar.gz
+
+# GitHub Pages / Jekyll (if fallback used)
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
