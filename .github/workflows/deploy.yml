@@ -26,12 +26,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
+      
+      - name: Cache pnpm store
+        uses: actions/cache@v3
+        with:
+          path: .pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      
+      - name: Update astro
+        run: pnpm update astro
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
       - name: Build
-        run: pnpm run build
+        run: pnpm run build --silent
 
       # IMPORTANT: make this the last step in build
       - name: Upload artifact
